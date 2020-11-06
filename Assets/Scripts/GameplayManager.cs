@@ -9,15 +9,35 @@ public class GameplayManager : MonoBehaviour
     public RenderTexture main_tex;
     public MainCharacterMovementController m_char;
     public Tilemap m_tilemap;
+    public Tilemap m_startPtsMap;
     public List<Vector3> availablePlaces;
+    public List<Vector3> availableDoors;
     public int max_num_x;
     public int max_num_y;
     // Start is called before the first frame update
+    void Awake()
+    {
+        availableDoors = new List<Vector3>();
+        getCells(m_startPtsMap, availableDoors, false);
+        availablePlaces = new List<Vector3>();
+        getCells(m_tilemap, availablePlaces, true);
+    }
     void Start()
     {
-        availablePlaces = new List<Vector3>();
+        //First Spawn Random
+        int random_door_pos = UnityEngine.Random.Range(1, availableDoors.Count);
+        m_char.transform.position = new Vector3(availableDoors[random_door_pos].x + m_startPtsMap.cellSize.x / 2, availableDoors[random_door_pos].y + m_startPtsMap.cellSize.y / 2, -1f);
 
-        for (int n = m_tilemap.cellBounds.xMin; n < m_tilemap.cellBounds.xMax; n++)
+
+        /*availableDoors = new List<Vector3>();
+
+        getCells(m_startPtsMap, availableDoors, false);*/
+
+        //availablePlaces = new List<Vector3>();
+
+        //getCells(m_tilemap, availablePlaces, true);
+
+        /*for (int n = m_tilemap.cellBounds.xMin; n < m_tilemap.cellBounds.xMax; n++)
         {
             for (int p = m_tilemap.cellBounds.yMin; p < m_tilemap.cellBounds.yMax; p++)
             {
@@ -34,9 +54,7 @@ public class GameplayManager : MonoBehaviour
                     availablePlaces.Add(Vector3.zero);
                 }
             }
-        }
-        Debug.Log("min X =" + m_tilemap.cellBounds.xMin);
-        Debug.Log("min Y =" + m_tilemap.cellBounds.yMin);
+        }*/
         max_num_x = Mathf.Abs(m_tilemap.cellBounds.xMin) + Mathf.Abs(m_tilemap.cellBounds.xMax)-1;
         max_num_y = Mathf.Abs(m_tilemap.cellBounds.yMin) + Mathf.Abs(m_tilemap.cellBounds.yMax)-1;
     }
@@ -74,5 +92,29 @@ public class GameplayManager : MonoBehaviour
             m_char.transform.position = new Vector3(availablePlaces[random_cell].x + m_tilemap.cellSize.x / 2, availablePlaces[random_cell].y + m_tilemap.cellSize.y / 2, -1f);
             break;
         } 
+    }
+    private void getCells(Tilemap m_map,List<Vector3> list, bool isGetZeroCell)
+    {
+        for (int n = m_map.cellBounds.xMin; n < m_map.cellBounds.xMax; n++)
+        {
+            for (int p = m_map.cellBounds.yMin; p < m_map.cellBounds.yMax; p++)
+            {
+                Vector3Int localPlace = (new Vector3Int(n, p, (int)m_map.transform.position.y));
+                Vector3 place = m_map.CellToWorld(localPlace);
+                if (m_map.HasTile(localPlace))
+                {
+                    //Tile at "place"
+                    list.Add(place);
+                }
+                else
+                {
+                    //No tile at "place"
+                    if(isGetZeroCell)
+                    {
+                        list.Add(Vector3.zero);
+                    }                  
+                }
+            }
+        }
     }
 }
