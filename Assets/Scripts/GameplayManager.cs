@@ -31,6 +31,7 @@ public class GameplayManager : MonoBehaviour
                 else
                 {
                     //No tile at "place"
+                    availablePlaces.Add(Vector3.zero);
                 }
             }
         }
@@ -68,14 +69,10 @@ public class GameplayManager : MonoBehaviour
     {
         int total_cell = max_num_x * max_num_y;
         int random_cell = UnityEngine.Random.Range(1, total_cell);
-        try
+        while(availablePlaces[random_cell].x ==0)
         {
             m_char.transform.position = new Vector3(availablePlaces[random_cell].x + m_tilemap.cellSize.x / 2, availablePlaces[random_cell].y + m_tilemap.cellSize.y / 2, -1f);
-        }
-        catch(Exception e)
-        {
-            Debug.Log("Random cell="+random_cell);
-        }
-        
+            break;
+        } 
     }
 }
