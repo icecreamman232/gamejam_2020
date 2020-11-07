@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MainCharacterMovementController : MonoBehaviour
 {
+    public float scaleSpd;
     public float speed = 1.0f;
     public Rigidbody2D m_rigid;
     private Vector3 movement;
@@ -12,6 +13,7 @@ public class MainCharacterMovementController : MonoBehaviour
     public bool isDeath = false;
     public Vector3 last_pos;
     public Animator animator;
+    public GameObject circle;
     public enum state
     {
         IDLE    = 1,
@@ -27,7 +29,19 @@ public class MainCharacterMovementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if(!isDeath)
+        {
+            Vector3 tmp = circle.transform.localScale;
+            tmp.x -= scaleSpd * Time.deltaTime;
+            tmp.y -= scaleSpd*Time.deltaTime;
+            circle.transform.localScale = tmp;
+            //this.transform.Rotate(Vector3.back,0.01f);
+            //this.transform.RotateAroundLocal(Vector3.back, 0.01f);
+            if (circle.transform.localScale.x < 0)
+            {
+                this.gameObject.SetActive(false);
+            }
+        }
     }
     private void FixedUpdate()
     {
@@ -72,14 +86,18 @@ public class MainCharacterMovementController : MonoBehaviour
     }
     IEnumerator ScaleDown(float scale_spd)
     {
-        while (this.transform.localScale.x >= 0)
+        while (circle.transform.localScale.x >= 0)
         {
-            Vector3 tmp = this.transform.localScale;
+            Vector3 tmp = circle.transform.localScale;
             tmp.x -= scale_spd+0.001f;
             tmp.y -= scale_spd+ 0.001f;
-            this.transform.localScale = tmp;
+            circle.transform.localScale = tmp;
             //this.transform.Rotate(Vector3.back,0.01f);
             //this.transform.RotateAroundLocal(Vector3.back, 0.01f);
+            if(circle.transform.localScale.x < 0)
+            {
+                this.gameObject.SetActive(false);
+            }
             yield return null;
         }
         

@@ -68,13 +68,12 @@ public class GameplayManager : MonoBehaviour
     }
     void ReSpawn()
     {
-        int total_cell = max_num_x * max_num_y;
-        int random_cell = UnityEngine.Random.Range(1, total_cell);
-        while(availablePlaces[random_cell].x ==0)
-        {
-            m_char.transform.position = new Vector3(availablePlaces[random_cell].x + m_tilemap.cellSize.x / 2, availablePlaces[random_cell].y + m_tilemap.cellSize.y / 2, -1f);
-            break;
-        } 
+        m_char.gameObject.SetActive(true);
+        m_char.transform.localScale = Vector3.one;
+        m_char.isDeath = false;
+        int random_door_pos = UnityEngine.Random.Range(1, availableDoors.Count);
+        m_char.transform.position = new Vector3(availableDoors[random_door_pos].x + m_startPtsMap.cellSize.x / 2, availableDoors[random_door_pos].y + m_startPtsMap.cellSize.y / 2, -1f);
+        m_char.circle.transform.localScale = Vector3.one;
     }
     private void getCells(Tilemap m_map,List<Vector3> list, bool isGetZeroCell)
     {

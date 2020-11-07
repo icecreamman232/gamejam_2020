@@ -149,9 +149,9 @@ Transform:
   m_GameObject: {fileID: 118607994}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1501656027}
+  m_Father: {fileID: 1147348984}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &118607996
@@ -377,9 +377,9 @@ Transform:
   m_GameObject: {fileID: 472303656}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1501656027}
+  m_Father: {fileID: 1147348984}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &472303658
@@ -674,6 +674,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Trap_pitfall
       objectReference: {fileID: 0}
+    - target: {fileID: 7965262522426224214, guid: 6af40909d0786194b8eb897c2f4fa5b7, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6af40909d0786194b8eb897c2f4fa5b7, type: 3}
 --- !u!4 &810304368 stripped
@@ -714,7 +718,7 @@ Transform:
   - {fileID: 1714663314}
   - {fileID: 1748195459}
   m_Father: {fileID: 1501656027}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &940113186
 Animator:
@@ -849,6 +853,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1147348983
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1147348984}
+  m_Layer: 0
+  m_Name: FogCircle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1147348984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147348983}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 118607995}
+  - {fileID: 472303657}
+  m_Father: {fileID: 1501656027}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1250165602
 GameObject:
   m_ObjectHideFlags: 0
@@ -933,9 +969,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 118607995}
-  - {fileID: 472303657}
   - {fileID: 940113185}
+  - {fileID: 1147348984}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -951,12 +986,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95bb3b7344f35504a93206b44bf91b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scaleSpd: 0.02
   speed: 3
   m_rigid: {fileID: 1501656030}
   rotateSpd: 0.05
   isDeath: 0
   last_pos: {x: 0, y: 0, z: 0}
   animator: {fileID: 0}
+  circle: {fileID: 1147348983}
   m_state: 0
 --- !u!61 &1501656029
 BoxCollider2D:
@@ -1320,7 +1357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1923276533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1455,6 +1492,10 @@ PrefabInstance:
     - target: {fileID: 6206380883136155949, guid: cd72a8fae253daf429afa42b0f9c96fe, type: 3}
       propertyPath: m_Name
       value: Doors
+      objectReference: {fileID: 0}
+    - target: {fileID: 6597726281677976302, guid: cd72a8fae253daf429afa42b0f9c96fe, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cd72a8fae253daf429afa42b0f9c96fe, type: 3}
