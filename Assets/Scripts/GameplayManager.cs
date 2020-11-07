@@ -10,10 +10,15 @@ public class GameplayManager : MonoBehaviour
     public MainCharacterMovementController m_char;
     public Tilemap m_tilemap;
     public Tilemap m_startPtsMap;
+    public Tilemap m_sawMap;
     public List<Vector3> availablePlaces;
     public List<Vector3> availableDoors;
+    public List<Vector3> availableSaw;
     public int max_num_x;
     public int max_num_y;
+
+
+    public GameObject SawTrap;
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,6 +26,9 @@ public class GameplayManager : MonoBehaviour
         getCells(m_startPtsMap, availableDoors, false);
         availablePlaces = new List<Vector3>();
         getCells(m_tilemap, availablePlaces, true);
+        availableSaw = new List<Vector3>();
+        getCells(m_sawMap, availableSaw, false);
+
     }
     void Start()
     {
@@ -28,33 +36,8 @@ public class GameplayManager : MonoBehaviour
         int random_door_pos = UnityEngine.Random.Range(1, availableDoors.Count);
         m_char.transform.position = new Vector3(availableDoors[random_door_pos].x + m_startPtsMap.cellSize.x / 2, availableDoors[random_door_pos].y + m_startPtsMap.cellSize.y / 2, -1f);
 
+        SetupSawTrap(SawTrap, availableSaw);
 
-        /*availableDoors = new List<Vector3>();
-
-        getCells(m_startPtsMap, availableDoors, false);*/
-
-        //availablePlaces = new List<Vector3>();
-
-        //getCells(m_tilemap, availablePlaces, true);
-
-        /*for (int n = m_tilemap.cellBounds.xMin; n < m_tilemap.cellBounds.xMax; n++)
-        {
-            for (int p = m_tilemap.cellBounds.yMin; p < m_tilemap.cellBounds.yMax; p++)
-            {
-                Vector3Int localPlace = (new Vector3Int(n, p, (int)m_tilemap.transform.position.y));
-                Vector3 place = m_tilemap.CellToWorld(localPlace);
-                if (m_tilemap.HasTile(localPlace))
-                {
-                    //Tile at "place"
-                    availablePlaces.Add(place);
-                }
-                else
-                {
-                    //No tile at "place"
-                    availablePlaces.Add(Vector3.zero);
-                }
-            }
-        }*/
         max_num_x = Mathf.Abs(m_tilemap.cellBounds.xMin) + Mathf.Abs(m_tilemap.cellBounds.xMax)-1;
         max_num_y = Mathf.Abs(m_tilemap.cellBounds.yMin) + Mathf.Abs(m_tilemap.cellBounds.yMax)-1;
     }
@@ -85,13 +68,12 @@ public class GameplayManager : MonoBehaviour
     }
     void ReSpawn()
     {
-        int total_cell = max_num_x * max_num_y;
-        int random_cell = UnityEngine.Random.Range(1, total_cell);
-        while(availablePlaces[random_cell].x ==0)
-        {
-            m_char.transform.position = new Vector3(availablePlaces[random_cell].x + m_tilemap.cellSize.x / 2, availablePlaces[random_cell].y + m_tilemap.cellSize.y / 2, -1f);
-            break;
-        } 
+        m_char.gameObject.SetActive(true);
+        m_char.transform.localScale = Vector3.one;
+        m_char.isDeath = false;
+        int random_door_pos = UnityEngine.Random.Range(1, availableDoors.Count);
+        m_char.transform.position = new Vector3(availableDoors[random_door_pos].x + m_startPtsMap.cellSize.x / 2, availableDoors[random_door_pos].y + m_startPtsMap.cellSize.y / 2, -1f);
+        m_char.circle.transform.localScale = Vector3.one;
     }
     private void getCells(Tilemap m_map,List<Vector3> list, bool isGetZeroCell)
     {
@@ -116,5 +98,20 @@ public class GameplayManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void SetupSawTrap(GameObject SawTrap,List<Vector3> pos_list)
+    {
+        for(int i =0;i<pos_list.Count;i++)
+        {
+            Vector3 tmp_pos = new Vector3(pos_list[i].x+m_sawMap.cellSize.x/2, pos_list[i].y + m_sawMap.cellSize.y / 2, pos_list[i].z);
+            Quaternion rot = new Quaternion(0, 0, 0, 0);
+            Instantiate(SawTrap, tmp_pos, rot);
+        }
+        
+    }
+    private void UpdateSaw()
+    {
+
     }
 }
